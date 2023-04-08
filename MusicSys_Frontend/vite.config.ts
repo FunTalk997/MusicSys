@@ -43,9 +43,8 @@ export default defineConfig({
     https: false,
     proxy: {
       "/api": {
-        // target:
-        //   "http://movie-visualization-sys-backend.movie-visualization-sys:8000/api/",
-        target: "http://127.0.0.1:8000/api/",
+        target: "http://music-sys-backend.music-sys:8000/api/",
+        // target: "http://127.0.0.1:8000/api/",
         changeOrigin: true,
         rewrite: (path) => path.replace("/api/", "/"),
       },
