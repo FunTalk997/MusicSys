@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import APlayer from "Aplayer";
-import "APlayer/dist/APlayer.min.css";
+import APlayer from "aplayer";
+import "aplayer/dist/APlayer.min.css";
 import eventBus from "./event-bus";
 
 const aplayerRef = ref(null);
