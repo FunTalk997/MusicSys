@@ -1,10 +1,29 @@
 <script setup lang="ts">
 import request from "@/api/request";
 import { ElMessage, type FormInstance, type FormRules } from "element-plus";
+import Cookies from "js-cookie";
 
 const props = defineProps<{
   dialogVisible: boolean;
 }>();
+
+const userInfo = ref({}) as any;
+
+const getUserInfo = async () => {
+  const userToken = Cookies.get("userToken");
+  if (userToken) {
+    await request({
+      url: "userInfo/",
+      params: { token: userToken },
+    }).then((res) => {
+      if (res.data.meta.status === 200) {
+        userInfo.value = res.data.data;
+        form.value.id = userInfo.value.id;
+      }
+    });
+  }
+};
+getUserInfo();
 
 const emits = defineEmits(["update:dialogVisible"]);
 const handleClose = () => {
@@ -14,7 +33,7 @@ const handleClose = () => {
 const formRef = ref<FormInstance>();
 
 const form = ref({
-  username: "admin",
+  id: "",
   oldPassword: "",
   newPassword: "",
   checkPassword: "",
@@ -25,7 +44,7 @@ const checkOldPw = (rule: any, value: any, callback: any) => {
     return callback(new Error("请输入旧密码"));
   }
   request({
-    url: "editPwd/",
+    url: "userPwd/",
     params: form.value,
   }).then((response) => {
     if (response.data.meta.status === 200) {
@@ -76,8 +95,8 @@ const handleConfirm = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async (valid, fields) => {
     if (valid) {
       await request({
-        url: "editPwd/",
-        method: "put",
+        url: "userPwd/",
+        method: "post",
         data: form.value,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       }).then(() => {

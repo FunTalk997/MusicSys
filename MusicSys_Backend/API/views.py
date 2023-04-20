@@ -413,7 +413,7 @@ class CollectView(View):
 
     def post(self, request):
         user_id = request.POST.get('user_id')
-        music_id = request.POST.get('user_id')
+        music_id = request.POST.get('music_id')
 
         collectModel = CollectModel.objects.all()
 

@@ -2,6 +2,23 @@
 import request from "@/api/request";
 import eventBus from "@/views/frontground/components/event-bus";
 import { ElMessage } from "element-plus";
+import Cookies from "js-cookie";
+
+const userInfo = ref(null) as any;
+const getUserInfo = async () => {
+  const userToken = Cookies.get("userToken");
+  if (userToken) {
+    await request({
+      url: "userInfo/",
+      params: { token: userToken },
+    }).then((res) => {
+      if (res.data.meta.status === 200) {
+        userInfo.value = res.data.data;
+      }
+    });
+  }
+};
+getUserInfo();
 
 const dataList = ref([]);
 const total = ref(0);
@@ -50,9 +67,12 @@ const handleAddPlayList = (row: any) => {
 // 添加音乐到收藏列表
 const handleCollect = async (row: any) => {
   await request({
-    url: "",
+    url: "collect/",
     method: "post",
-    data: row,
+    data: {
+      user_id: userInfo.value.id,
+      music_id: row.id,
+    },
   }).then((res) => {
     if (res.data.meta["status"] === 201) {
       ElMessage({
@@ -129,6 +149,9 @@ const handleCurrentChange = (pageNum: number) => {
               ><i-ep-CirclePlus
             /></el-icon>
             <el-icon @click="handleCollect(row)"><i-ep-Star /></el-icon>
+            <router-link :to="'/detail/' + row.id"
+              ><el-icon><i-ep-View /></el-icon
+            ></router-link>
           </div>
         </template>
       </el-table-column>
