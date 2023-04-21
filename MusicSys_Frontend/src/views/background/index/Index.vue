@@ -18,7 +18,7 @@
       <span>首页</span>
     </template>
     <div class="hello">
-      <h2>欢迎使用用 音乐后台管理系统</h2>
+      <h2>欢迎使用 音乐后台管理系统</h2>
       <div class="img">
         <img class="pic" src="@/assets/pic1.jpg" />
         <img class="pic" src="@/assets/pic2.jpg" />
